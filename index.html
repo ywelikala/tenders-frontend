@@ -20,6 +20,12 @@
   <body>
     <div id="root"></div>
     <script src="/config.js"></script>
+    <script>
+      // Ensure config is loaded before main app
+      if (typeof window.ENV === 'undefined') {
+        console.warn('⚠️ Config.js not loaded, using fallback configuration');
+      }
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

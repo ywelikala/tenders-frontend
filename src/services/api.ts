@@ -12,22 +12,32 @@ declare global {
 }
 
 const getApiBaseUrl = (): string => {
+  console.log('🔧 API Configuration Debug:', {
+    windowEnv: window.ENV,
+    viteEnv: import.meta.env.VITE_API_BASE_URL,
+    timestamp: new Date().toISOString()
+  });
+
   // Check if window.ENV is available (injected by Docker or config.js)
   if (window.ENV?.API_BASE_URL) {
+    console.log('✅ Using window.ENV API_BASE_URL:', window.ENV.API_BASE_URL);
     return window.ENV.API_BASE_URL;
   }
   
   // Fallback to environment variables for Vite development
   const envApiUrl = import.meta.env.VITE_API_BASE_URL;
   if (envApiUrl) {
+    console.log('✅ Using VITE_API_BASE_URL:', envApiUrl);
     return envApiUrl;
   }
   
   // Default fallback
-  return 'https://lankatender.com/api';
+  console.log('⚠️ Using default fallback API URL');
+  return 'https://api.lankatender.com/api';
 };
 
 const API_BASE_URL = getApiBaseUrl();
+console.log('🌐 Final API Base URL:', API_BASE_URL);
 
 // Types for API responses
 export interface ApiResponse<T> {
