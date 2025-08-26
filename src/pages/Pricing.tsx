@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Check, Loader2, Sprout, Rocket, Crown } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
+import { subscriptionService } from '../services/subscriptionService';
 
 interface PricingPlan {
   id: string;
@@ -95,23 +96,7 @@ const Pricing = () => {
 
     try {
       // Redirect to Stripe Checkout
-      const response = await fetch('/api/subscriptions/create-checkout-session', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
-        },
-        body: JSON.stringify({
-          priceId: plan.stripePriceId,
-          planId: plan.id
-        })
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to create checkout session');
-      }
-
-      const { url } = await response.json();
+      const { url } = await subscriptionService.createCheckoutSession(plan.id, plan.stripePriceId);
       window.location.href = url;
     } catch (error) {
       console.error('Subscription error:', error);

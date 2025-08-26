@@ -62,6 +62,21 @@ class SubscriptionService {
     return response.data!.usage;
   }
 
+  // Create Stripe checkout session
+  async createCheckoutSession(planId: string, stripePriceId: string): Promise<{ url: string }> {
+    const response = await apiClient.post<{ url: string }>('/subscriptions/create-checkout-session', {
+      planId,
+      priceId: stripePriceId
+    });
+    return response.data!;
+  }
+
+  // Verify Stripe session
+  async verifySession(sessionId: string): Promise<{ success: boolean; message: string }> {
+    const response = await apiClient.get<{ success: boolean; message: string }>(`/subscriptions/verify-session/${sessionId}`);
+    return response.data!;
+  }
+
   // Mock data for development (fallback when backend is not available)
   private getMockPlans(): SubscriptionPlan[] {
     return [

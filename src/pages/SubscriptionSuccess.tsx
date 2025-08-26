@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
 import { Link, useSearchParams } from 'react-router-dom';
+import { subscriptionService } from '../services/subscriptionService';
 
 const SubscriptionSuccess = () => {
   const [searchParams] = useSearchParams();
@@ -20,19 +21,14 @@ const SubscriptionSuccess = () => {
       }
 
       try {
-        const response = await fetch(`/api/subscriptions/verify-session/${sessionId}`, {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
-          }
-        });
-
-        if (response.ok) {
+        const response = await subscriptionService.verifySession(sessionId);
+        
+        if (response.success) {
           setStatus('success');
           setMessage('Your subscription has been activated successfully!');
         } else {
           setStatus('error');
-          setMessage('Failed to verify subscription. Please contact support.');
+          setMessage(response.message || 'Failed to verify subscription. Please contact support.');
         }
       } catch (error) {
         console.error('Verification error:', error);
