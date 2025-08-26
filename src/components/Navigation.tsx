@@ -24,12 +24,8 @@ const Navigation = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-3">
-            <div className="flex items-center">
-              <div className="text-xl font-semibold text-gray-900">
-                TenderPortal
-              </div>
-            </div>
+          <Link to="/" className="flex items-center">
+            <img src="/logo.png" alt="Lanka Tender" className="h-12 w-auto" />
           </Link>
 
           {/* Navigation Links */}

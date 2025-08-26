@@ -9,11 +9,11 @@ echo "   Raw NODE_ENV: '$NODE_ENV'"
 
 # Default environment variables
 API_BASE_URL=${API_BASE_URL:-"https://api.lankatender.com/api"}
-APP_NAME=${APP_NAME:-"Tenders Portal"}
+APP_NAME=${APP_NAME:-"Lanka Tender"}
 APP_VERSION=${APP_VERSION:-"1.0.0"}
 NODE_ENV=${NODE_ENV:-"production"}
 
-echo "🚀 Starting tenders-frontend with configuration:"
+echo "🚀 Starting Lanka Tender frontend with configuration:"
 echo "   API_BASE_URL: $API_BASE_URL"
 echo "   APP_NAME: $APP_NAME"
 echo "   APP_VERSION: $APP_VERSION"

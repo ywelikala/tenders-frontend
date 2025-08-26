@@ -93,7 +93,7 @@ const Landing = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-primary mb-4">
-              Why Choose Our Tender Portal?
+              Why Choose Lanka Tender?
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Connect with opportunities, streamline your procurement process, and grow your business with our comprehensive tender management platform.

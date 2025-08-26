@@ -3,6 +3,23 @@ import { Badge } from './ui/badge';
 import { Wifi, WifiOff, AlertTriangle, CheckCircle } from 'lucide-react';
 import { apiClient } from '../services/api';
 
+// Get API base URL using the same logic as api.ts
+const getApiBaseUrl = (): string => {
+  // Check if window.ENV is available (injected by Docker or config.js)
+  if (window.ENV?.API_BASE_URL) {
+    return window.ENV.API_BASE_URL;
+  }
+  
+  // Fallback to environment variables for Vite development
+  const envApiUrl = import.meta.env.VITE_API_BASE_URL;
+  if (envApiUrl) {
+    return envApiUrl;
+  }
+  
+  // Default fallback
+  return 'https://api.lankatender.com/api';
+};
+
 interface ConnectionStatusProps {
   className?: string;
 }
@@ -48,7 +65,8 @@ const ConnectionStatus: React.FC<ConnectionStatusProps> = ({ className }) => {
       setApiStatus('checking');
       try {
         // Check if backend is running and healthy
-        const response = await fetch('/api/health', {
+        const apiBaseUrl = getApiBaseUrl();
+        const response = await fetch(`${apiBaseUrl}/health`, {
           method: 'GET',
           cache: 'no-cache',
           headers: {
