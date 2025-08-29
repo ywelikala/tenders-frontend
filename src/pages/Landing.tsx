@@ -1,10 +1,14 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Navigation from '@/components/Navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Building2, FileText, Users, TrendingUp } from 'lucide-react';
+import { useTenderStats } from '@/hooks/useTenders';
 
 const Landing = () => {
+  const { data: stats, isLoading, error } = useTenderStats();
+
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
@@ -42,11 +46,15 @@ const Landing = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button variant="hero" size="lg" className="text-lg px-8 py-4">
-                View Tenders →
+              <Button variant="hero" size="lg" className="text-lg px-8 py-4" asChild>
+                <Link to="/tenders">
+                  View Tenders →
+                </Link>
               </Button>
-              <Button variant="hero" size="lg" className="text-lg px-8 py-4">
-                View Tenders →
+              <Button variant="hero" size="lg" className="text-lg px-8 py-4" asChild>
+                <Link to="/register">
+                  Get Started →
+                </Link>
               </Button>
             </div>
           </div>
@@ -59,28 +67,36 @@ const Landing = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             <Card className="bg-transparent border-tender-orange/20 text-center">
               <CardContent className="p-6">
-                <div className="text-3xl font-bold text-tender-orange mb-2">10</div>
+                <div className="text-3xl font-bold text-tender-orange mb-2">
+                  {isLoading ? '...' : stats?.todayTenders || 0}
+                </div>
                 <div className="text-sm">Today's Tenders</div>
               </CardContent>
             </Card>
             
             <Card className="bg-transparent border-tender-orange/20 text-center">
               <CardContent className="p-6">
-                <div className="text-3xl font-bold text-tender-orange mb-2">508</div>
+                <div className="text-3xl font-bold text-tender-orange mb-2">
+                  {isLoading ? '...' : stats?.liveTenders || 0}
+                </div>
                 <div className="text-sm">Live Tenders</div>
               </CardContent>
             </Card>
             
             <Card className="bg-transparent border-tender-orange/20 text-center">
               <CardContent className="p-6">
-                <div className="text-3xl font-bold text-tender-orange mb-2">29988</div>
+                <div className="text-3xl font-bold text-tender-orange mb-2">
+                  {isLoading ? '...' : stats?.closedTenders || 0}
+                </div>
                 <div className="text-sm">Closed Tenders</div>
               </CardContent>
             </Card>
             
             <Card className="bg-transparent border-tender-orange/20 text-center">
               <CardContent className="p-6">
-                <div className="text-3xl font-bold text-tender-orange mb-2">30495</div>
+                <div className="text-3xl font-bold text-tender-orange mb-2">
+                  {isLoading ? '...' : stats?.totalTenders || 0}
+                </div>
                 <div className="text-sm">All Tenders</div>
               </CardContent>
             </Card>
@@ -144,11 +160,15 @@ const Landing = () => {
             Join thousands of businesses already using our platform to find and win tenders
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button variant="orange" size="lg">
-              Register for Free
+            <Button variant="orange" size="lg" asChild>
+              <Link to="/register">
+                Register for Free
+              </Link>
             </Button>
-            <Button variant="outline" size="lg">
-              Browse Tenders
+            <Button variant="outline" size="lg" asChild>
+              <Link to="/tenders">
+                Browse Tenders
+              </Link>
             </Button>
           </div>
         </div>
