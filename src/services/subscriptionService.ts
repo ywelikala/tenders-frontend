@@ -64,10 +64,11 @@ class SubscriptionService {
 
   // Create Stripe checkout session
   async createCheckoutSession(planId: string): Promise<{ sessionId: string; url: string }> {
-    const response = await apiClient.post<{ data: { sessionId: string; url: string } }>('/subscriptions/create-checkout-session', {
+    const response = await apiClient.post<{ sessionId: string; url: string }>('/subscriptions/create-checkout-session', {
       planId
     });
-    return response.data!.data;
+    // apiClient.post returns the full response, so we need response.data (not response.data.data)
+    return response.data!;
   }
 
   // Verify Stripe session
