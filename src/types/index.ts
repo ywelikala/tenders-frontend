@@ -232,6 +232,7 @@ export interface TenderStats {
   liveTenders: number;
   todayTenders: number;
   closedTenders: number;
+  supplierCount: number;
   categoryStats: Array<{
     _id: string;
     count: number;

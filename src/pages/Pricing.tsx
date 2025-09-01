@@ -125,7 +125,7 @@ const Pricing = () => {
           {plans.map((plan) => {
             const IconComponent = plan.icon;
             return (
-              <Card key={plan.id} className={`relative ${plan.popular ? 'ring-2 ring-tender-orange shadow-xl' : ''}`}>
+              <Card key={plan.id} className={`relative flex flex-col ${plan.popular ? 'ring-2 ring-tender-orange shadow-xl' : ''}`}>
                 {plan.popular && (
                   <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-tender-orange">
                     Most Popular
@@ -148,8 +148,8 @@ const Pricing = () => {
                   <p className="text-gray-600 text-sm">{plan.description}</p>
                 </CardHeader>
                 
-                <CardContent>
-                  <ul className="space-y-3 mb-8">
+                <CardContent className="flex flex-col flex-grow">
+                  <ul className="space-y-3 mb-8 flex-grow">
                     {plan.features.map((feature, index) => (
                       <li key={index} className="flex items-start gap-3">
                         <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
@@ -161,8 +161,7 @@ const Pricing = () => {
                   </ul>
                   
                   <Button 
-                    className={`w-full ${plan.popular ? 'bg-tender-orange hover:bg-tender-orange/90' : ''}`}
-                    variant={plan.popular ? 'default' : 'outline'}
+                    className="w-full bg-tender-orange hover:bg-tender-orange/90 text-white"
                     onClick={() => handleSubscribe(plan)}
                     disabled={loading === plan.id}
                   >

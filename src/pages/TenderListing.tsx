@@ -7,9 +7,11 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Building2, FileText, Loader2, X } from 'lucide-react';
 import { useTenders, useTenderStats } from '../hooks/useTenders';
+import { useAuth } from '../contexts/AuthContext';
 import type { TenderQueryParams } from '../types';
 
 const TenderListing = () => {
+  const { user } = useAuth();
   const [queryParams, setQueryParams] = useState<TenderQueryParams>({
     page: 1,
     limit: 10,
@@ -145,26 +147,17 @@ const TenderListing = () => {
         <div className="grid lg:grid-cols-4 gap-8">
           {/* Sidebar */}
           <div className="lg:col-span-1 space-y-6">
-            {/* Upload Tender */}
-            <Card className="ms-card bg-tender-blue text-white">
-              <CardContent className="p-6 text-center">
-                <h3 className="font-semibold mb-2 text-white">Connect with Buyers & Suppliers</h3>
-                <p className="text-sm mb-4 text-tender-light-blue">Upload Your Tenders FREE</p>
-                <Button className="w-full bg-white text-tender-blue hover:bg-gray-50 font-semibold">
-                  Upload Tender
-                </Button>
-              </CardContent>
-            </Card>
-
-            {/* Registration */}
-            <Card className="ms-card bg-gray-50 border-gray-200">
-              <CardContent className="p-6 text-center">
-                <h3 className="font-semibold mb-4 text-gray-800">Registration of Suppliers (2800)</h3>
-                <Button className="w-full bg-tender-blue hover:bg-tender-blue-hover text-white font-semibold">
-                  Register Now
-                </Button>
-              </CardContent>
-            </Card>
+            {/* Registration - Only show for buyers */}
+            {user?.role === 'buyer' && (
+              <Card className="ms-card bg-gray-50 border-gray-200">
+                <CardContent className="p-6 text-center">
+                  <h3 className="font-semibold mb-4 text-gray-800">Registration of Suppliers ({stats?.supplierCount || 0})</h3>
+                  <Button className="w-full bg-tender-blue hover:bg-tender-blue-hover text-white font-semibold">
+                    Register Now
+                  </Button>
+                </CardContent>
+              </Card>
+            )}
 
             {/* Tenders by Sectors */}
             <Card className="ms-card">
