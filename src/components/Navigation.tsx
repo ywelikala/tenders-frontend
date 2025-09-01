@@ -40,26 +40,28 @@ const Navigation = () => {
               Home
             </Link>
             
-            {/* Show different tender link based on user role */}
-            {isAuthenticated && user?.role === 'supplier' ? (
-              <Link
-                to="/supplier/dashboard"
-                className={`text-gray-600 hover:text-tender-blue transition-colors text-sm font-medium ${
-                  isActive('/supplier/dashboard') ? 'text-tender-blue border-b-2 border-tender-blue pb-4' : ''
-                }`}
-              >
-                My Tenders
-              </Link>
-            ) : (
-              <Link
-                to="/tenders"
-                className={`text-gray-600 hover:text-tender-blue transition-colors text-sm font-medium ${
-                  isActive('/tenders') ? 'text-tender-blue border-b-2 border-tender-blue pb-4' : ''
-                }`}
-              >
-                Tenders
-              </Link>
-            )}
+            {/* Show different tender link based on authentication and user role */}
+            {isAuthenticated ? (
+              user?.role === 'supplier' ? (
+                <Link
+                  to="/supplier/dashboard"
+                  className={`text-gray-600 hover:text-tender-blue transition-colors text-sm font-medium ${
+                    isActive('/supplier/dashboard') ? 'text-tender-blue border-b-2 border-tender-blue pb-4' : ''
+                  }`}
+                >
+                  My Tenders
+                </Link>
+              ) : (
+                <Link
+                  to="/tenders"
+                  className={`text-gray-600 hover:text-tender-blue transition-colors text-sm font-medium ${
+                    isActive('/tenders') ? 'text-tender-blue border-b-2 border-tender-blue pb-4' : ''
+                  }`}
+                >
+                  Tenders
+                </Link>
+              )
+            ) : null}
             
             <Link
               to="/pricing"

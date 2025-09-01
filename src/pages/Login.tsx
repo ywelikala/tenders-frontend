@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { Loader2 } from 'lucide-react';
 
@@ -15,6 +15,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,10 +41,11 @@ const Login = () => {
       const result = await login({ email, password });
       console.log('✅ Login successful, checking user role for redirect');
       
-      // The login will trigger a context update, so we'll get the user info in the next render
-      // For now, just navigate to a default page and let the navigation component handle the redirect
-      // We can improve this with a more sophisticated routing solution later
-      navigate('/tenders');
+      // Get the page user was trying to access before login
+      const from = (location.state as any)?.from || '/tenders';
+      
+      // Navigate to the original destination or default to tenders page
+      navigate(from, { replace: true });
     } catch (err) {
       console.error('❌ Login failed:', err);
       setError(err instanceof Error ? err.message : 'Login failed');

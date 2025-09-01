@@ -15,6 +15,7 @@ import SubscriptionCancel from "./pages/SubscriptionCancel";
 import SupplierDashboard from "./pages/SupplierDashboard";
 import AddTender from "./pages/AddTender";
 import NotFound from "./pages/NotFound";
+import ProtectedRoute from "./components/ProtectedRoute";
 import { useToast } from "./hooks/use-toast";
 import { useEffect, Suspense, lazy } from "react";
 
@@ -112,15 +113,38 @@ const App = () => (
             <Sonner />
             <Routes>
               <Route path="/" element={<Landing />} />
-              <Route path="/tenders" element={<TenderListing />} />
+              {/* Protected Routes - Require Authentication */}
+              <Route 
+                path="/tenders" 
+                element={
+                  <ProtectedRoute>
+                    <TenderListing />
+                  </ProtectedRoute>
+                } 
+              />
+              {/* Supplier Routes - Require Supplier Role */}
+              <Route 
+                path="/supplier/dashboard" 
+                element={
+                  <ProtectedRoute requiredRole="supplier">
+                    <SupplierDashboard />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/supplier/add-tender" 
+                element={
+                  <ProtectedRoute requiredRole="supplier">
+                    <AddTender />
+                  </ProtectedRoute>
+                } 
+              />
+              {/* Public Routes */}
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/pricing" element={<Pricing />} />
               <Route path="/subscription/success" element={<SubscriptionSuccess />} />
               <Route path="/subscription/cancel" element={<SubscriptionCancel />} />
-              {/* Supplier Routes */}
-              <Route path="/supplier/dashboard" element={<SupplierDashboard />} />
-              <Route path="/supplier/add-tender" element={<AddTender />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

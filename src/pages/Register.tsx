@@ -1,16 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navigation from '@/components/Navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { Loader2 } from 'lucide-react';
 import type { RegisterData } from '../types';
 
 const Register = () => {
+  const [searchParams] = useSearchParams();
+  const roleParam = searchParams.get('role');
+  
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -19,7 +22,7 @@ const Register = () => {
     company: '',
     password: '',
     confirmPassword: '',
-    role: 'supplier' as 'supplier' | 'buyer'
+    role: (roleParam === 'supplier' || roleParam === 'buyer' ? roleParam : 'supplier') as 'supplier' | 'buyer'
   });
   const [error, setError] = useState('');
   const [agreeTerms, setAgreeTerms] = useState(false);
@@ -93,10 +96,14 @@ const Register = () => {
           <Card>
             <CardHeader className="text-center">
               <CardTitle className="text-2xl font-bold text-primary">
-                Create Your Account
+                {roleParam === 'supplier' ? 'Register as Supplier' : 
+                 roleParam === 'buyer' ? 'Register as Buyer' : 
+                 'Create Your Account'}
               </CardTitle>
               <p className="text-muted-foreground">
-                Join thousands of suppliers and buyers on our platform
+                {roleParam === 'supplier' ? 'Join thousands of suppliers to showcase your services' :
+                 roleParam === 'buyer' ? 'Join thousands of buyers to find the best suppliers' :
+                 'Join thousands of suppliers and buyers on our platform'}
               </p>
             </CardHeader>
             <CardContent className="space-y-6">
@@ -163,7 +170,7 @@ const Register = () => {
                   <Select 
                     value={formData.role}
                     onValueChange={(value) => handleInputChange('role', value)} 
-                    disabled={loading}
+                    disabled={loading || !!roleParam}
                   >
                     <SelectTrigger className="mt-1">
                       <SelectValue placeholder="Select account type" />
@@ -173,6 +180,11 @@ const Register = () => {
                       <SelectItem value="buyer">Buyer/Organization</SelectItem>
                     </SelectContent>
                   </Select>
+                  {roleParam && (
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Account type pre-selected from registration link
+                    </p>
+                  )}
                 </div>
                 
                 <div>

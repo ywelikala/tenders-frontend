@@ -52,8 +52,13 @@ const Landing = () => {
                 </Link>
               </Button>
               <Button variant="hero" size="lg" className="text-lg px-8 py-4" asChild>
-                <Link to="/register">
-                  Get Started →
+                <Link to="/register?role=supplier">
+                  Register as Supplier →
+                </Link>
+              </Button>
+              <Button variant="outline" size="lg" className="text-lg px-8 py-4 bg-white/10 hover:bg-white/20" asChild>
+                <Link to="/register?role=buyer">
+                  Register as Buyer →
                 </Link>
               </Button>
             </div>
@@ -161,8 +166,13 @@ const Landing = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button variant="orange" size="lg" asChild>
-              <Link to="/register">
-                Register for Free
+              <Link to="/register?role=supplier">
+                Register as Supplier
+              </Link>
+            </Button>
+            <Button variant="orange" size="lg" asChild>
+              <Link to="/register?role=buyer">
+                Register as Buyer
               </Link>
             </Button>
             <Button variant="outline" size="lg" asChild>
