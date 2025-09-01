@@ -22,6 +22,7 @@ const SubscriptionSuccess = () => {
 
       try {
         const response = await subscriptionService.verifySession(sessionId);
+        console.log('Subscription verification response:', response);
         
         if (response.success) {
           setStatus('success');

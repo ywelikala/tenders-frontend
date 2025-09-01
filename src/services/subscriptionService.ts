@@ -74,7 +74,8 @@ class SubscriptionService {
   // Verify Stripe session
   async verifySession(sessionId: string): Promise<{ success: boolean; message?: string; data?: any }> {
     const response = await apiClient.get<{ success: boolean; message?: string; data?: any }>(`/subscriptions/verify-session/${sessionId}`);
-    return response.data!;
+    // apiClient.get returns the full response, so we return response directly (not response.data)
+    return response;
   }
 
   // Mock data for development (fallback when backend is not available)
