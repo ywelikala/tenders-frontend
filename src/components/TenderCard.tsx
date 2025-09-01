@@ -298,6 +298,32 @@ const TenderCard = ({
               </div>
             )}
 
+            {/* Source Information */}
+            {tender.sourceUrl && (
+              <div className="space-y-3">
+                <div className="flex items-center gap-2 text-gray-800 font-semibold">
+                  <Eye className="h-5 w-5 text-tender-blue" />
+                  Source Information
+                </div>
+                <div className="pl-7">
+                  <p className="text-sm">
+                    <span className="font-medium text-gray-600">Source Page:</span>
+                    <a 
+                      href={tender.sourceUrl} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-tender-blue hover:underline ml-2 break-all"
+                    >
+                      View Original Page {tender.sourcePage && `(Page ${tender.sourcePage})`}
+                    </a>
+                  </p>
+                  <p className="text-xs text-gray-500 mt-1 italic">
+                    Click to view the original newspaper page where this tender was found
+                  </p>
+                </div>
+              </div>
+            )}
+
             {/* Documents */}
             <div className="space-y-3">
               <div className="flex items-center gap-2 text-gray-800 font-semibold">

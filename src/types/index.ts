@@ -104,6 +104,8 @@ export interface Tender {
     downloads: number;
     applications: number;
   };
+  sourceUrl?: string; // URL of the newspaper page containing this tender
+  sourcePage?: number; // Page number in the newspaper where this tender was found
   seo?: {
     metaTitle: string;
     metaDescription: string;
@@ -329,6 +331,7 @@ export interface CreateTenderData {
   priority?: 'low' | 'medium' | 'high' | 'urgent';
   visibility?: 'public' | 'registered' | 'premium';
   tags?: string[];
+  status?: 'draft' | 'published' | 'closed' | 'awarded' | 'cancelled';
 }
 
 export interface UpdateProfileData {

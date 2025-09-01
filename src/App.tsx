@@ -12,6 +12,8 @@ import Register from "./pages/Register";
 import Pricing from "./pages/Pricing";
 import SubscriptionSuccess from "./pages/SubscriptionSuccess";
 import SubscriptionCancel from "./pages/SubscriptionCancel";
+import SupplierDashboard from "./pages/SupplierDashboard";
+import AddTender from "./pages/AddTender";
 import NotFound from "./pages/NotFound";
 import { useToast } from "./hooks/use-toast";
 import { useEffect, Suspense, lazy } from "react";
@@ -116,6 +118,9 @@ const App = () => (
               <Route path="/pricing" element={<Pricing />} />
               <Route path="/subscription/success" element={<SubscriptionSuccess />} />
               <Route path="/subscription/cancel" element={<SubscriptionCancel />} />
+              {/* Supplier Routes */}
+              <Route path="/supplier/dashboard" element={<SupplierDashboard />} />
+              <Route path="/supplier/add-tender" element={<AddTender />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

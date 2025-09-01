@@ -67,7 +67,12 @@ const Register = () => {
     
     try {
       await register(registerData);
-      navigate('/tenders');
+      // Redirect based on user role
+      if (registerData.role === 'supplier') {
+        navigate('/supplier/dashboard');
+      } else {
+        navigate('/tenders');
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Registration failed');
     } finally {
@@ -155,7 +160,11 @@ const Register = () => {
                 
                 <div>
                   <Label htmlFor="role">Account Type</Label>
-                  <Select onValueChange={(value) => handleInputChange('role', value)} disabled={loading}>
+                  <Select 
+                    value={formData.role}
+                    onValueChange={(value) => handleInputChange('role', value)} 
+                    disabled={loading}
+                  >
                     <SelectTrigger className="mt-1">
                       <SelectValue placeholder="Select account type" />
                     </SelectTrigger>

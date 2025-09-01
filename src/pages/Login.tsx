@@ -37,8 +37,12 @@ const Login = () => {
     
     try {
       console.log('🚀 Calling login function from AuthContext');
-      await login({ email, password });
-      console.log('✅ Login successful, navigating to /tenders');
+      const result = await login({ email, password });
+      console.log('✅ Login successful, checking user role for redirect');
+      
+      // The login will trigger a context update, so we'll get the user info in the next render
+      // For now, just navigate to a default page and let the navigation component handle the redirect
+      // We can improve this with a more sophisticated routing solution later
       navigate('/tenders');
     } catch (err) {
       console.error('❌ Login failed:', err);
