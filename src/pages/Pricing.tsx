@@ -88,15 +88,15 @@ const Pricing = () => {
   const handleSubscribe = async (plan: PricingPlan) => {
     if (!isAuthenticated) {
       // Redirect to login with return URL
-      window.location.href = `/login?redirect=/subscribe/${plan.id}`;
+      window.location.href = `/login?redirect=/pricing`;
       return;
     }
 
     setLoading(plan.id);
 
     try {
-      // Redirect to Stripe Checkout
-      const { url } = await subscriptionService.createCheckoutSession(plan.id, plan.stripePriceId);
+      // Create Stripe checkout session and redirect
+      const { url } = await subscriptionService.createCheckoutSession(plan.id);
       window.location.href = url;
     } catch (error) {
       console.error('Subscription error:', error);

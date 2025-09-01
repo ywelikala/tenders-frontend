@@ -63,17 +63,16 @@ class SubscriptionService {
   }
 
   // Create Stripe checkout session
-  async createCheckoutSession(planId: string, stripePriceId: string): Promise<{ url: string }> {
-    const response = await apiClient.post<{ url: string }>('/subscriptions/create-checkout-session', {
-      planId,
-      priceId: stripePriceId
+  async createCheckoutSession(planId: string): Promise<{ sessionId: string; url: string }> {
+    const response = await apiClient.post<{ data: { sessionId: string; url: string } }>('/subscriptions/create-checkout-session', {
+      planId
     });
-    return response.data!;
+    return response.data!.data;
   }
 
   // Verify Stripe session
-  async verifySession(sessionId: string): Promise<{ success: boolean; message: string }> {
-    const response = await apiClient.get<{ success: boolean; message: string }>(`/subscriptions/verify-session/${sessionId}`);
+  async verifySession(sessionId: string): Promise<{ success: boolean; message?: string; data?: any }> {
+    const response = await apiClient.get<{ success: boolean; message?: string; data?: any }>(`/subscriptions/verify-session/${sessionId}`);
     return response.data!;
   }
 
