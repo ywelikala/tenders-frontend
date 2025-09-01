@@ -96,13 +96,20 @@ const Pricing = () => {
 
     try {
       // Create Stripe checkout session and redirect
-      const { url } = await subscriptionService.createCheckoutSession(plan.id);
-      window.location.href = url;
+      const result = await subscriptionService.createCheckoutSession(plan.id);
+      console.log('Checkout session result:', result);
+      
+      if (result && result.url) {
+        // Don't reset loading state before redirect
+        window.location.href = result.url;
+        return; // Exit early, don't run finally block
+      } else {
+        throw new Error('No checkout URL received from server');
+      }
     } catch (error) {
       console.error('Subscription error:', error);
-      alert('Failed to start subscription process. Please try again.');
-    } finally {
-      setLoading(null);
+      alert(`Failed to start subscription process: ${error.message || error}. Please try again.`);
+      setLoading(null); // Only reset loading on error
     }
   };
 
