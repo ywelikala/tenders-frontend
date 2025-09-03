@@ -1,11 +1,32 @@
 import React from 'react';
 import Navigation from '@/components/Navigation';
+import SEOHead from '@/components/SEOHead';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Building2, Globe, Shield, Users } from 'lucide-react';
 
 const About = () => {
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    "name": "About Lanka Tender",
+    "description": "Learn about Lanka Tender, Sri Lanka's premier government tender portal",
+    "url": "https://lankatender.com/about",
+    "mainEntity": {
+      "@type": "Organization",
+      "name": "Lanka Tender",
+      "description": "Sri Lanka's premier government tender portal providing daily access to business opportunities"
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
+      <SEOHead 
+        title="About Lanka Tender - Sri Lanka's Premier Tender Portal"
+        description="Learn about Lanka Tender, Sri Lanka's leading government tender portal. Discover our mission to connect businesses with government procurement opportunities across Sri Lanka."
+        keywords={["about lanka tender", "sri lanka tender portal", "government procurement", "business opportunities sri lanka"]}
+        structuredData={structuredData}
+        canonicalUrl="https://lankatender.com/about"
+      />
       <Navigation />
       
       <div className="container mx-auto px-4 py-16">

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Navigation from '@/components/Navigation';
+import SEOHead from '@/components/SEOHead';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -114,8 +115,23 @@ const Pricing = () => {
   };
 
 
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Pricing Plans - Lanka Tender",
+    "description": "Affordable pricing plans for accessing Sri Lankan government tenders",
+    "url": "https://lankatender.com/pricing"
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-tender-orange/5 to-orange-100/30">
+      <SEOHead 
+        title="Pricing Plans - Affordable Access to Sri Lankan Tenders"
+        description="Choose from our affordable pricing plans to access Sri Lanka's most comprehensive government and private tender database. Starting from LKR 2,000/month."
+        keywords={["sri lanka tender pricing", "tender subscription", "government tender access", "business plans sri lanka"]}
+        structuredData={structuredData}
+        canonicalUrl="https://lankatender.com/pricing"
+      />
       <Navigation />
       
       <div className="container mx-auto px-4 py-16">

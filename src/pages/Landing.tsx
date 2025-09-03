@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Navigation from '@/components/Navigation';
+import SEOHead from '@/components/SEOHead';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Building2, FileText, Users, TrendingUp } from 'lucide-react';
@@ -9,8 +10,33 @@ import { useTenderStats } from '@/hooks/useTenders';
 const Landing = () => {
   const { data: stats, isLoading, error } = useTenderStats();
 
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Lanka Tender",
+    "url": "https://lankatender.com",
+    "description": "Sri Lankan Government Tender Portal providing access to daily government tenders from multiple newspapers",
+    "logo": "https://lankatender.com/logo.png",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "customer service",
+      "areaServed": "LK",
+      "availableLanguage": ["en", "si"]
+    },
+    "sameAs": [
+      "https://twitter.com/lankatender"
+    ]
+  };
+
   return (
     <div className="min-h-screen bg-background">
+      <SEOHead 
+        title="Lanka Tender - Sri Lankan Government Tender Portal"
+        description="Access daily Sri Lankan government tenders from multiple newspapers. Get alerts, search archives, and stay informed about business opportunities in Sri Lanka."
+        keywords={["sri lanka tenders", "government tenders", "business opportunities", "procurement", "bids", "contracts", "lankatender", "sri lankan tenders"]}
+        structuredData={structuredData}
+        canonicalUrl="https://lankatender.com/"
+      />
       <Navigation />
       
       {/* Hero Section */}

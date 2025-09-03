@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Navigation from '@/components/Navigation';
+import SEOHead from '@/components/SEOHead';
 import SearchFilters from '@/components/SearchFilters';
 import TenderCard from '@/components/TenderCard';
 import { Button } from '@/components/ui/button';
@@ -134,8 +135,28 @@ const TenderListing = () => {
   // Category statistics from backend
   const categories = stats?.categoryStats || [];
 
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Government Tenders Sri Lanka",
+    "description": "Browse and search government and private sector tenders in Sri Lanka",
+    "url": "https://lankatender.com/tenders",
+    "isPartOf": {
+      "@type": "WebSite",
+      "name": "Lanka Tender",
+      "url": "https://lankatender.com"
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
+      <SEOHead 
+        title="Government Tenders Sri Lanka - Browse Latest Opportunities"
+        description="Browse and search the latest government and private sector tenders in Sri Lanka. Find business opportunities, procurement bids, and contracts updated daily."
+        keywords={["government tenders sri lanka", "procurement opportunities", "business bids", "sri lanka contracts", "tender search"]}
+        structuredData={structuredData}
+        canonicalUrl="https://lankatender.com/tenders"
+      />
       <Navigation />
       <SearchFilters 
         onSearch={handleSearch}

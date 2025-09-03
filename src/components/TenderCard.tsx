@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ChevronDown, ChevronUp, Building, MapPin, Calendar, DollarSign, FileText, Users, Eye, Download } from 'lucide-react';
+import { ChevronDown, ChevronUp, Building, MapPin, Calendar, DollarSign, FileText, Users, Eye, Download, ExternalLink } from 'lucide-react';
 
 interface TenderCardProps {
   title: string;
@@ -58,7 +58,20 @@ const TenderCard = ({
           </div>
           <div className="space-y-1">
             <span className="font-medium text-gray-600 text-xs uppercase tracking-wide">Source</span>
-            <p className="text-tender-blue cursor-pointer hover:underline font-medium">{source}</p>
+            <div className="flex items-center gap-2">
+              <p className="text-tender-blue cursor-pointer hover:underline font-medium">{source}</p>
+              {tender?.sourceUrl && (
+                <a 
+                  href={tender.sourceUrl} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-tender-blue hover:text-tender-blue-hover transition-colors"
+                  title="View original tender image"
+                >
+                  <ExternalLink className="h-4 w-4" />
+                </a>
+              )}
+            </div>
           </div>
           <div className="space-y-1">
             <span className="font-medium text-gray-600 text-xs uppercase tracking-wide">Location</span>
