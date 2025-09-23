@@ -213,20 +213,92 @@ export const useResetPassword = () => {
   const navigate = useNavigate();
 
   return useMutation({
-    mutationFn: ({ token, password }: { token: string; password: string }) => 
+    mutationFn: ({ token, password }: { token: string; password: string }) =>
       authService.resetPassword(token, password),
     onSuccess: () => {
       toast({
         title: "Success",
         description: "Password reset successfully. Please log in with your new password.",
       });
-      
+
       navigate('/login');
     },
     onError: (error: Error) => {
       toast({
         title: "Reset Failed",
         description: error.message || "Failed to reset password.",
+        variant: "destructive",
+      });
+    },
+  });
+};
+
+// Social login hooks
+export const useGoogleLogin = () => {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+  const navigate = useNavigate();
+
+  return useMutation({
+    mutationFn: (credential: string) => authService.googleLogin(credential),
+    onSuccess: async (authResponse) => {
+      console.log('🎉 Google login successful:', authResponse);
+
+      // Invalidate and refetch user data
+      await queryClient.invalidateQueries({ queryKey: authKeys.user() });
+
+      // Set user data in cache
+      if (authResponse.user) {
+        queryClient.setQueryData(authKeys.user(), authResponse.user);
+      }
+
+      toast({
+        title: "Success",
+        description: "Successfully logged in with Google!",
+      });
+
+      navigate('/tenders');
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Google Login Failed",
+        description: error.message || "Failed to log in with Google.",
+        variant: "destructive",
+      });
+    },
+  });
+};
+
+export const useFacebookLogin = () => {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+  const navigate = useNavigate();
+
+  return useMutation({
+    mutationFn: ({ accessToken, userID }: { accessToken: string; userID: string }) =>
+      authService.facebookLogin(accessToken, userID),
+    onSuccess: async (authResponse) => {
+      console.log('🎉 Facebook login successful:', authResponse);
+
+      // Invalidate and refetch user data
+      await queryClient.invalidateQueries({ queryKey: authKeys.user() });
+
+      // Set user data in cache
+      if (authResponse.user) {
+        queryClient.setQueryData(authKeys.user(), authResponse.user);
+      }
+
+      toast({
+        title: "Success",
+        description: "Successfully logged in with Facebook!",
+      });
+
+      navigate('/tenders');
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Facebook Login Failed",
+        description: error.message || "Failed to log in with Facebook.",
         variant: "destructive",
       });
     },

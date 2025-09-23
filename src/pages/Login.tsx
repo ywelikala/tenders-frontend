@@ -6,6 +6,9 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { useGoogleLogin, useFacebookLogin } from '../hooks/useAuth';
+import { GoogleLogin } from '@react-oauth/google';
+import FacebookLogin from '../components/FacebookLogin';
 import { Loader2 } from 'lucide-react';
 
 const Login = () => {
@@ -16,6 +19,8 @@ const Login = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const googleLoginMutation = useGoogleLogin();
+  const facebookLoginMutation = useFacebookLogin();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -54,6 +59,34 @@ const Login = () => {
     }
   };
 
+  const handleGoogleSuccess = async (credentialResponse: any) => {
+    console.log('🎯 Google login success:', credentialResponse);
+    try {
+      await googleLoginMutation.mutateAsync(credentialResponse.credential);
+    } catch (error) {
+      console.error('❌ Google login error:', error);
+    }
+  };
+
+  const handleGoogleError = () => {
+    console.error('❌ Google login failed');
+    setError('Google login failed. Please try again.');
+  };
+
+  const handleFacebookLogin = async (accessToken: string, userID: string) => {
+    console.log('🎯 Facebook login success:', { userID });
+    try {
+      await facebookLoginMutation.mutateAsync({ accessToken, userID });
+    } catch (error) {
+      console.error('❌ Facebook login error:', error);
+    }
+  };
+
+  const handleFacebookError = (error: Error) => {
+    console.error('❌ Facebook login failed:', error);
+    setError(`Facebook login failed: ${error.message}`);
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
@@ -70,7 +103,7 @@ const Login = () => {
               </p>
               <div className="bg-blue-50 p-3 rounded-lg text-sm text-blue-800 border border-blue-200">
                 <strong>Demo Credentials:</strong><br />
-                Test User: test@example.com / test123<br />
+                Test User: test@example.com / password123<br />
                 <span className="text-blue-600">✓ Connected to live backend API</span>
                 <div className="mt-2 pt-2 border-t border-blue-200">
                   <button
@@ -107,7 +140,7 @@ const Login = () => {
                     className="mt-1"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    disabled={loading}
+                    disabled={loading || googleLoginMutation.isPending || facebookLoginMutation.isPending}
                   />
                 </div>
                 
@@ -120,7 +153,7 @@ const Login = () => {
                     className="mt-1"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    disabled={loading}
+                    disabled={loading || googleLoginMutation.isPending || facebookLoginMutation.isPending}
                   />
                 </div>
                 
@@ -139,12 +172,14 @@ const Login = () => {
                   variant="orange" 
                   className="w-full" 
                   size="lg"
-                  disabled={loading}
+                  disabled={loading || googleLoginMutation.isPending || facebookLoginMutation.isPending}
                 >
-                  {loading ? (
+                  {(loading || googleLoginMutation.isPending || facebookLoginMutation.isPending) ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Logging in...
+                      {googleLoginMutation.isPending ? 'Google Login...' :
+                       facebookLoginMutation.isPending ? 'Facebook Login...' :
+                       'Logging in...'}
                     </>
                   ) : (
                     'Login'
@@ -171,12 +206,20 @@ const Login = () => {
               </div>
               
               <div className="space-y-3">
-                <Button variant="outline" className="w-full">
-                  Continue with Google
-                </Button>
-                <Button variant="outline" className="w-full">
-                  Continue with Facebook
-                </Button>
+                <GoogleLogin
+                  onSuccess={handleGoogleSuccess}
+                  onError={handleGoogleError}
+                  width="384"
+                  shape="rectangular"
+                  theme="outline"
+                  text="continue_with"
+                  logo_alignment="left"
+                />
+                <FacebookLogin
+                  onLogin={handleFacebookLogin}
+                  onError={handleFacebookError}
+                  disabled={facebookLoginMutation.isPending}
+                />
               </div>
             </CardContent>
           </Card>

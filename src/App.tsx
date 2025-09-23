@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import { AuthProvider } from "./contexts/AuthContext";
 import ErrorBoundary from "./components/ErrorBoundary";
 import Landing from "./pages/Landing";
@@ -109,9 +110,10 @@ const App = () => (
   >
     <HelmetProvider>
       <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
-          <AuthProvider>
-            <TooltipProvider>
+        <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID || ""}>
+          <BrowserRouter>
+            <AuthProvider>
+              <TooltipProvider>
             <AuthEventHandler />
             <Toaster />
             <Sonner />
@@ -160,9 +162,10 @@ const App = () => (
                 <ReactQueryDevtools initialIsOpen={false} />
               </Suspense>
             )}
-            </TooltipProvider>
-          </AuthProvider>
-        </BrowserRouter>
+              </TooltipProvider>
+            </AuthProvider>
+          </BrowserRouter>
+        </GoogleOAuthProvider>
       </QueryClientProvider>
     </HelmetProvider>
   </ErrorBoundary>

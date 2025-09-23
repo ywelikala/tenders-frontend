@@ -92,6 +92,46 @@ class AuthService {
     await apiClient.put('/auth/reset-password', { token, password });
   }
 
+  // Social login methods
+  async googleLogin(credential: string): Promise<AuthResponse> {
+    console.log('🚀 AuthService.googleLogin called');
+
+    try {
+      const response = await apiClient.post<AuthResponse>('/auth/google', {
+        credential
+      });
+
+      if (response.success && response.data?.token) {
+        TokenManager.setToken(response.data.token, response.data?.refreshToken);
+      }
+
+      return response.data!;
+    } catch (error) {
+      console.error('❌ Google login failed:', error);
+      throw error;
+    }
+  }
+
+  async facebookLogin(accessToken: string, userID: string): Promise<AuthResponse> {
+    console.log('🚀 AuthService.facebookLogin called');
+
+    try {
+      const response = await apiClient.post<AuthResponse>('/auth/facebook', {
+        accessToken,
+        userID
+      });
+
+      if (response.success && response.data?.token) {
+        TokenManager.setToken(response.data.token, response.data?.refreshToken);
+      }
+
+      return response.data!;
+    } catch (error) {
+      console.error('❌ Facebook login failed:', error);
+      throw error;
+    }
+  }
+
   // Utility methods
   isAuthenticated(): boolean {
     return TokenManager.isAuthenticated();
