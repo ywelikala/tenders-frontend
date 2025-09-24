@@ -1,0 +1,30 @@
+{
+  "name": "Lanka Tender Portal",
+  "short_name": "Lanka Tender",
+  "description": "Sri Lankan Government Tender Portal providing access to daily government tenders",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "any",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/logo.png",
+      "sizes": "1038x445",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "theme_color": "#ea580c",
+  "background_color": "#ffffff",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "categories": ["business", "productivity", "government"]
+}
