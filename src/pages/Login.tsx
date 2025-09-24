@@ -6,9 +6,8 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { useGoogleLogin, useFacebookLogin } from '../hooks/useAuth';
+import { useGoogleLogin } from '../hooks/useAuth';
 import { GoogleLogin } from '@react-oauth/google';
-import FacebookLogin from '../components/FacebookLogin';
 import { Loader2 } from 'lucide-react';
 
 const Login = () => {
@@ -20,7 +19,6 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const googleLoginMutation = useGoogleLogin();
-  const facebookLoginMutation = useFacebookLogin();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -73,19 +71,6 @@ const Login = () => {
     setError('Google login failed. Please try again.');
   };
 
-  const handleFacebookLogin = async (accessToken: string, userID: string) => {
-    console.log('🎯 Facebook login success:', { userID });
-    try {
-      await facebookLoginMutation.mutateAsync({ accessToken, userID });
-    } catch (error) {
-      console.error('❌ Facebook login error:', error);
-    }
-  };
-
-  const handleFacebookError = (error: Error) => {
-    console.error('❌ Facebook login failed:', error);
-    setError(`Facebook login failed: ${error.message}`);
-  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -140,7 +125,7 @@ const Login = () => {
                     className="mt-1"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    disabled={loading || googleLoginMutation.isPending || facebookLoginMutation.isPending}
+                    disabled={loading || googleLoginMutation.isPending}
                   />
                 </div>
                 
@@ -153,7 +138,7 @@ const Login = () => {
                     className="mt-1"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    disabled={loading || googleLoginMutation.isPending || facebookLoginMutation.isPending}
+                    disabled={loading || googleLoginMutation.isPending}
                   />
                 </div>
                 
@@ -172,14 +157,12 @@ const Login = () => {
                   variant="orange" 
                   className="w-full" 
                   size="lg"
-                  disabled={loading || googleLoginMutation.isPending || facebookLoginMutation.isPending}
+                  disabled={loading || googleLoginMutation.isPending}
                 >
-                  {(loading || googleLoginMutation.isPending || facebookLoginMutation.isPending) ? (
+                  {(loading || googleLoginMutation.isPending) ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      {googleLoginMutation.isPending ? 'Google Login...' :
-                       facebookLoginMutation.isPending ? 'Facebook Login...' :
-                       'Logging in...'}
+                      {googleLoginMutation.isPending ? 'Google Login...' : 'Logging in...'}
                     </>
                   ) : (
                     'Login'
@@ -214,11 +197,6 @@ const Login = () => {
                   theme="outline"
                   text="continue_with"
                   logo_alignment="left"
-                />
-                <FacebookLogin
-                  onLogin={handleFacebookLogin}
-                  onError={handleFacebookError}
-                  disabled={facebookLoginMutation.isPending}
                 />
               </div>
             </CardContent>

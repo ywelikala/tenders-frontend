@@ -7,6 +7,7 @@ declare global {
       APP_NAME: string;
       APP_VERSION: string;
       NODE_ENV: string;
+      VITE_GOOGLE_CLIENT_ID: string;
     };
   }
 }
@@ -36,8 +37,35 @@ const getApiBaseUrl = (): string => {
   return 'https://api.lankatender.com/api';
 };
 
+const getGoogleClientId = (): string => {
+  console.log('🔧 Google OAuth Configuration Debug:', {
+    windowEnv: window.ENV?.VITE_GOOGLE_CLIENT_ID,
+    viteEnv: import.meta.env.VITE_GOOGLE_CLIENT_ID,
+    timestamp: new Date().toISOString()
+  });
+
+  // Check if window.ENV is available (injected by Docker or config.js)
+  if (window.ENV?.VITE_GOOGLE_CLIENT_ID) {
+    console.log('✅ Using window.ENV VITE_GOOGLE_CLIENT_ID:', window.ENV.VITE_GOOGLE_CLIENT_ID);
+    return window.ENV.VITE_GOOGLE_CLIENT_ID;
+  }
+
+  // Fallback to environment variables for Vite development
+  const envGoogleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+  if (envGoogleClientId) {
+    console.log('✅ Using VITE_GOOGLE_CLIENT_ID:', envGoogleClientId);
+    return envGoogleClientId;
+  }
+
+  // Default fallback - empty string for safety
+  console.log('⚠️ No Google Client ID found, using empty string');
+  return '';
+};
+
 const API_BASE_URL = getApiBaseUrl();
+const GOOGLE_CLIENT_ID = getGoogleClientId();
 console.log('🌐 Final API Base URL:', API_BASE_URL);
+console.log('🔑 Final Google Client ID:', GOOGLE_CLIENT_ID ? '***configured***' : 'not configured');
 
 // Types for API responses
 export interface ApiResponse<T> {
@@ -244,4 +272,4 @@ class ApiClient {
 // Create API client instance
 const apiClient = new ApiClient(API_BASE_URL);
 
-export { apiClient, TokenManager };
+export { apiClient, TokenManager, GOOGLE_CLIENT_ID };

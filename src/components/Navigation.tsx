@@ -62,7 +62,19 @@ const Navigation = () => {
                 </Link>
               )
             ) : null}
-            
+
+            {/* Alert Settings - Only for Professional and Enterprise users */}
+            {isAuthenticated && (user?.subscription?.plan === 'professional' || user?.subscription?.plan === 'enterprise') && (
+              <Link
+                to="/alert-settings"
+                className={`text-gray-600 hover:text-tender-blue transition-colors text-sm font-medium ${
+                  isActive('/alert-settings') ? 'text-tender-blue border-b-2 border-tender-blue pb-4' : ''
+                }`}
+              >
+                Alert Settings
+              </Link>
+            )}
+
             <Link
               to="/pricing"
               className={`text-gray-600 hover:text-tender-blue transition-colors text-sm font-medium ${

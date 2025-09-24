@@ -112,25 +112,6 @@ class AuthService {
     }
   }
 
-  async facebookLogin(accessToken: string, userID: string): Promise<AuthResponse> {
-    console.log('🚀 AuthService.facebookLogin called');
-
-    try {
-      const response = await apiClient.post<AuthResponse>('/auth/facebook', {
-        accessToken,
-        userID
-      });
-
-      if (response.success && response.data?.token) {
-        TokenManager.setToken(response.data.token, response.data?.refreshToken);
-      }
-
-      return response.data!;
-    } catch (error) {
-      console.error('❌ Facebook login failed:', error);
-      throw error;
-    }
-  }
 
   // Utility methods
   isAuthenticated(): boolean {

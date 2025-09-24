@@ -9,7 +9,7 @@ export interface User {
   role: 'buyer' | 'supplier' | 'admin';
   isEmailVerified: boolean;
   subscription: {
-    plan: 'free' | 'basic' | 'premium' | 'enterprise';
+    plan: 'free' | 'basic' | 'professional' | 'enterprise';
     status: 'active' | 'inactive' | 'cancelled' | 'suspended';
     startDate: string;
     endDate: string;
@@ -354,4 +354,102 @@ export interface UpdateProfileData {
 export interface ChangePasswordData {
   currentPassword: string;
   newPassword: string;
+}
+
+// Alert types
+export interface AlertKeyword {
+  term: string;
+  matchType: 'exact' | 'contains' | 'starts_with' | 'ends_with';
+}
+
+export interface AlertLocation {
+  provinces: string[];
+  districts: string[];
+  cities: string[];
+}
+
+export interface AlertEstimatedValue {
+  min?: number;
+  max?: number;
+  currency: string;
+}
+
+export interface AlertEmailSettings {
+  enabled: boolean;
+  frequency: 'immediate' | 'daily' | 'weekly';
+  customEmail?: string;
+  lastSentAt?: string;
+  dailySummaryTime: string;
+}
+
+export interface AlertAdvancedFilters {
+  excludeKeywords: string[];
+  minDaysUntilClosing?: number;
+  maxDaysUntilClosing?: number;
+  includedStatuses: ('draft' | 'published' | 'closed' | 'awarded' | 'cancelled')[];
+  includedPriorities: ('low' | 'medium' | 'high' | 'urgent')[];
+}
+
+export interface AlertStats {
+  totalMatches: number;
+  emailsSent: number;
+  lastMatchedTender?: string;
+  lastMatchedAt?: string;
+}
+
+export interface AlertConfiguration {
+  _id: string;
+  name: string;
+  description?: string;
+  isActive: boolean;
+  keywords: AlertKeyword[];
+  categories: string[];
+  locations: AlertLocation;
+  organizationTypes: ('government' | 'private' | 'semi-government' | 'ngo')[];
+  estimatedValue?: AlertEstimatedValue;
+  emailSettings: AlertEmailSettings;
+  advancedFilters: AlertAdvancedFilters;
+  stats: AlertStats;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateAlertData {
+  name: string;
+  description?: string;
+  keywords: AlertKeyword[];
+  categories?: string[];
+  locations?: AlertLocation;
+  organizationTypes?: ('government' | 'private' | 'semi-government' | 'ngo')[];
+  estimatedValue?: AlertEstimatedValue;
+  emailSettings?: Partial<AlertEmailSettings>;
+  advancedFilters?: Partial<AlertAdvancedFilters>;
+}
+
+export interface UpdateAlertData extends Partial<CreateAlertData> {
+  isActive?: boolean;
+}
+
+export interface AlertTestResult {
+  matchingTenders: Tender[];
+  matchCount: number;
+  totalTested: number;
+}
+
+export interface AlertStats {
+  totalAlerts: number;
+  activeAlerts: number;
+  inactiveAlerts: number;
+  totalMatches: number;
+  totalEmailsSent: number;
+  alertsByFrequency: {
+    immediate: number;
+    daily: number;
+    weekly: number;
+  };
+  recentMatches: Array<{
+    alertName: string;
+    lastMatchedAt: string;
+    totalMatches: number;
+  }>;
 }

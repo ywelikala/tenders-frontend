@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { AuthProvider } from "./contexts/AuthContext";
+import { GOOGLE_CLIENT_ID } from "./services/api";
 import ErrorBoundary from "./components/ErrorBoundary";
 import Landing from "./pages/Landing";
 import TenderListing from "./pages/TenderListing";
@@ -18,6 +19,7 @@ import SubscriptionSuccess from "./pages/SubscriptionSuccess";
 import SubscriptionCancel from "./pages/SubscriptionCancel";
 import SupplierDashboard from "./pages/SupplierDashboard";
 import AddTender from "./pages/AddTender";
+import AlertSettings from "./pages/AlertSettings";
 import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { useToast } from "./hooks/use-toast";
@@ -110,7 +112,7 @@ const App = () => (
   >
     <HelmetProvider>
       <QueryClientProvider client={queryClient}>
-        <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID || ""}>
+        <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
           <BrowserRouter>
             <AuthProvider>
               <TooltipProvider>
@@ -137,13 +139,22 @@ const App = () => (
                   </ProtectedRoute>
                 } 
               />
-              <Route 
-                path="/supplier/add-tender" 
+              <Route
+                path="/supplier/add-tender"
                 element={
                   <ProtectedRoute requiredRole="supplier">
                     <AddTender />
                   </ProtectedRoute>
-                } 
+                }
+              />
+              {/* Alert Settings - Require Authentication */}
+              <Route
+                path="/alert-settings"
+                element={
+                  <ProtectedRoute>
+                    <AlertSettings />
+                  </ProtectedRoute>
+                }
               />
               {/* Public Routes */}
               <Route path="/login" element={<Login />} />
